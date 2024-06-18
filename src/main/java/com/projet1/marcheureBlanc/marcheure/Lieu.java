@@ -4,13 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
-
-@Getter
+@Data
 @EqualsAndHashCode
 @AllArgsConstructor
 public class Lieu {
-    private final String nomDuLieu;
-    private final List<Route> routesAdjacentes;
+    private String nomDuLieu;
+    private List<Route> routesAdjacentes;
 }
