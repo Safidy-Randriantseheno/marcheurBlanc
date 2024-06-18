@@ -1,29 +1,30 @@
 package com.projet1.marcheureBlanc.marcheure;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-@Data
+@Getter
 @AllArgsConstructor
-public record Route {
+@EqualsAndHashCode
+public class Route {
     private final String nom;
 
     public Lieu obtenirAutreExtremite(Lieu extremiteActuelle, Carte carte) {
-        List<Lieu> possibilités = carte.lieux().stream()
+        List<Lieu> possibilites = carte.getLieux().stream()
                 .filter(lieu -> !lieu.equals(extremiteActuelle))
                 .filter(lieu -> lieu.getRoutesAdjacentes().stream()
                         .anyMatch(route -> extremiteActuelle.getRoutesAdjacentes().contains(route)))
                 .collect(Collectors.toList());
 
-        if (possibilités.isEmpty()) {
+        if (possibilites.isEmpty()) {
             throw new IllegalStateException("Impossible de trouver un lieu avec des routes adjacentes communes.");
         }
 
-        return possibilités.get(new Random().nextInt(possibilités.size()));
+        return possibilites.get(new Random().nextInt(possibilites.size()));
     }
 }
