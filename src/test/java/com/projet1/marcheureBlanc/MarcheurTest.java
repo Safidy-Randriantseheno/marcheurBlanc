@@ -1,27 +1,49 @@
 package com.projet1.marcheureBlanc;
 
+import com.projet1.marcheureBlanc.marcheure.Carte;
+import com.projet1.marcheureBlanc.marcheure.Lieu;
+import com.projet1.marcheureBlanc.marcheure.Marcheur;
+import com.projet1.marcheureBlanc.marcheure.Route;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Arrays;
+import java.util.List;
+
 public class MarcheurTest {
-
     @Test
-    public void marcheur_arrive_toujours_a_destination() {
-        Rue rue1 = new Rue("heisekl");
-        Rue rue2 = new Rue("heipull");
-        Rue rue3 = new Rue("ballpull");
-        Rue rue4 = new Rue("ballboulevard");
-        Rue rue5 = new Rue("ballesti");
-        Rue rue6 = new Rue("seklmarais");
+    public void testMarcheurArriveToujoursADestination() {
+        Lieu lieu1 = new Lieu("hei", null);
+        Lieu lieu2 = new Lieu("Sekolintsika", null);
+        Lieu lieu3 = new Lieu("Marais", null);
+        Lieu lieu4 = new Lieu("Pullman", null);
+        Lieu lieu5 = new Lieu("Balançoire", null);
+        Lieu lieu6 = new Lieu("Boulevard", null);
+        Lieu destination = new Lieu("Esti", null);
 
-        Lieu hei = new Lieu("hei", Arrays.asList(rue1, rue2));
-        Lieu Pullman = new Lieu("Pullman", Arrays.asList(rue2, rue3));
-        Lieu Balancoire = new Lieu("Balançoire", Arrays.asList(rue3, rue4, rue5));
-        Lieu Boulevard = new Lieu("Boulevard", Arrays.asList(rue4));
-        Lieu esti = new Lieu("Esti", Arrays.asList(rue5));
-        Lieu sekl = new Lieu("Sekolintsika", Arrays.asList(rue6, rue1));
-        Lieu marais = new Lieu("Marais", Arrays.asList(rue6));
+        Route route1 = new Route("Route 1");
+        Route route2 = new Route("Route 2");
+        Route route3 = new Route("Route 3");
+        Route route4 = new Route("Route 4");
+        Route route5 = new Route("Route 5");
+        Route route6 = new Route("Route 6");
 
-        Carte carte = new Carte(List.of(hei, Pullman, Balancoire, Boulevard, esti, sekl, marais));
+        lieu1.setRoutesAdjacentes(Arrays.asList(route1, route2));
+        lieu2.setRoutesAdjacentes(Arrays.asList(route1, route3, route4));
+        lieu3.setRoutesAdjacentes(Arrays.asList(route2, route4, route5));
+        lieu4.setRoutesAdjacentes(Arrays.asList(route3, route6));
+        lieu5.setRoutesAdjacentes(Arrays.asList(route5, route6));
+        lieu6.setRoutesAdjacentes(Arrays.asList(route4, route5, route6));
+        destination.setRoutesAdjacentes(Arrays.asList(route6));
 
-        Marcheur Bjarni = new Marcheur("Bjarni", hei, esti);
+        Carte carte = new Carte(Arrays.asList(lieu1, lieu2, lieu3, lieu4, lieu5, lieu6, destination));
 
-        assertEquals(esti, Bjarni.marcher(carte).get(Bjarni.marcher(carte).size() - 1));
+        Marcheur marcheur = new Marcheur("Test Marcheur", lieu1, destination);
+
+        List<Lieu> parcours = marcheur.marcher(carte);
+
+        assertEquals(destination, parcours.get(parcours.size() - 1));
+
+        marcheur.afficherTrajectoire(parcours);
     }
+}
